@@ -66,14 +66,24 @@ class GRAFO():
         dic_[u] = 0
         list_mov = [u]
         acc = 0
+        shortest_path = []
+        all_ways = []
         while len(list_mov) != len(self.grafo):
             ordenado = sorted(self.grafo[list_mov[acc]], key=lambda item: item[1])
             for i in ordenado:
                 if dic_[i[0]] > i[1] + dic_[list_mov[acc]]:
                     dic_[i[0]] = i[1] + dic_[list_mov[acc]]
+                    all_ways.append([list_mov[acc], i[0], dic_[i[0]]])
             list_mov.append(ordenado[0][0])
             acc += 1
-        return dic_[v]
+        shortest_path_cost = dic_[v]
+        end_word = v
+        while end_word != u:
+            for i in reversed(all_ways):
+                if end_word == i[1]:
+                    shortest_path.append(i)
+                    end_word = i[0]
+        return (shortest_path[::-1], shortest_path_cost)
 
 
 
@@ -96,7 +106,7 @@ def main():
     grafo1.adiciona_aresta("E", "A", 5)
     grafo1.adiciona_aresta("B", "D", 2)
     grafo1.imprime_lista_adjacencias()
-    print(grafo1.Dijkstra("A","E"))
+    print(grafo1.Dijkstra("A","D"))
 
 
 
