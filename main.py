@@ -61,30 +61,25 @@ class GRAFO():
             print(f"{key} : {aresta}")
             aresta = ""
 
-    def Dijkstra(self, u, v):
-        dic_ = {key: math.inf for key in self.grafo if key != u}
-        dic_[u] = 0
-        list_mov = [u]
+    def Dijkstra(self, start, end):
+        dic_ = {key: math.inf for key in self.grafo if key != start}
+        past_distance = 0
+        dic_[start] = past_distance
+        visited = [start]
         acc = 0
-        shortest_path = []
-        all_ways = []
-        while len(list_mov) != len(self.grafo):
-            ordenado = sorted(self.grafo[list_mov[acc]], key=lambda item: item[1])
-            for i in ordenado:
-                if dic_[i[0]] > i[1] + dic_[list_mov[acc]]:
-                    dic_[i[0]] = i[1] + dic_[list_mov[acc]]
-                    all_ways.append([list_mov[acc], i[0], dic_[i[0]]])
-            list_mov.append(ordenado[0][0])
-            acc += 1
-        shortest_path_cost = dic_[v]
-        end_word = v
-        while end_word != u:
-            for i in reversed(all_ways):
-                if end_word == i[1]:
-                    shortest_path.append(i)
-                    end_word = i[0]
-        return (shortest_path[::-1], shortest_path_cost)
+        while end not in visited:
+            for key, value in self.grafo[visited[acc]]:
+                if key in visited:
+                    continue
 
+                new_distance = value + dic_[visited[acc]]
+
+                if dic_[key] > new_distance:
+                    dic_[key] = new_distance
+
+                visited.append(key)
+            acc += 1
+        return dic_[end]
 
 
 
@@ -95,6 +90,7 @@ def main():
     grafo1.adiciona_vertice("C")
     grafo1.adiciona_vertice("D")
     grafo1.adiciona_vertice("E")
+    grafo1.adiciona_vertice("F")
     grafo1.adiciona_aresta("A", "B", 5)
     grafo1.adiciona_aresta("B", "C", 2)
     grafo1.adiciona_aresta("C", "A", 8)
@@ -105,8 +101,9 @@ def main():
     grafo1.adiciona_aresta("E", "B", 3)
     grafo1.adiciona_aresta("E", "A", 5)
     grafo1.adiciona_aresta("B", "D", 2)
+    grafo1.adiciona_aresta("D", "F", 3)
     grafo1.imprime_lista_adjacencias()
-    print(grafo1.Dijkstra("A","D"))
+    print(grafo1.Dijkstra("A","C"))
 
 
 
