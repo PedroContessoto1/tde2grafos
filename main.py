@@ -63,8 +63,7 @@ class GRAFO():
 
     def Dijkstra(self, start, end):
         dic_ = {key: math.inf for key in self.grafo if key != start}
-        past_distance = 0
-        dic_[start] = past_distance
+        dic_[start] = 0
         visited = [start]
         acc = 0
         while end not in visited:
