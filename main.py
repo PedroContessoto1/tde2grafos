@@ -1,5 +1,6 @@
 import math
 
+
 class GRAFO():
     def __init__(self):
         self.grafo = {}
@@ -25,7 +26,6 @@ class GRAFO():
             self.grafo[vertice1] = nova_lista
         else:
             print(f"Aresta entre {vertice1} -> {vertice2} não existe")
-
 
     def remove_vertice(self, vertice):
         if vertice not in self.grafo:
@@ -66,20 +66,25 @@ class GRAFO():
         dic_[start] = 0
         visited = [start]
         acc = 0
+        direcion = []
+        best_direcion = [end]
         while end not in visited:
             for key, value in self.grafo[visited[acc]]:
                 if key in visited:
                     continue
-
                 new_distance = value + dic_[visited[acc]]
 
                 if dic_[key] > new_distance:
+                    direcion.append([visited[acc], key])
                     dic_[key] = new_distance
-
                 visited.append(key)
             acc += 1
-        return dic_[end]
-
+        end_word = end
+        for i in direcion[::-1]:
+            if end_word == i[1]:
+                best_direcion.append(i[0])
+                end_word = i[0]
+        return (dic_[end], best_direcion[::-1])
 
 
 def main():
@@ -102,9 +107,7 @@ def main():
     grafo1.adiciona_aresta("B", "D", 2)
     grafo1.adiciona_aresta("D", "F", 3)
     grafo1.imprime_lista_adjacencias()
-    print(grafo1.Dijkstra("A","C"))
-
-
+    print(grafo1.Dijkstra("A", "E"))
 
 
 if __name__ == "__main__":
